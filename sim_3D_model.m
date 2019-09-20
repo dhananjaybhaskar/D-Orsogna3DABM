@@ -1,4 +1,4 @@
-function [] = sim_3D_model(iCr, iLr, sigma)
+function [] = sim_3D_model(idx, sigma)
 
 % Simulate 3-D D'Orsogna model with params iCr, iLr
 % Last modified: Isaac Nathoo (Sep 20, 2019, use iterative solver to add noise)
@@ -9,6 +9,10 @@ function [] = sim_3D_model(iCr, iLr, sigma)
 % set RNG seed based on param value
 seed = 17 + 23*(iCr) + iLr;
 rng(seed)
+
+% set index values
+iCr = ceil(idx/5)
+iLr = rem(idx/5)
 
 % time-step for iterative solver
 deltat = 0.01
@@ -49,8 +53,10 @@ for i = 1:100
     vz = -2*rand(N,1) + 1;
     
     % select cR, lR
-    cR = iCr;
-    lR = iLr;
+    cRvals=[0.1 0.5 0.9 2 3]; %create the cR range .. replusion strength
+    lRvals=[0.1 0.5 0.9 2 3]; %create the lR range .. repulsion range
+    cR = cRvals[iCr];
+    lR = lRvals[iLr];
             
     % put it all in one big vector of ICs
     z0 = [x; y; z; vx; vy; vz];
