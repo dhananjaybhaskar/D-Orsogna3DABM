@@ -1,6 +1,7 @@
-function [] = sim_3D_model(iCr, iLr)
+function [] = sim_3D_model(iCr, iLr, sigma)
 
 % Simulate 3-D D'Orsogna model with params iCr, iLr
+% Last modified: Isaac Nathoo (Sep 20, 2019, use iterative solver to add noise)
 % Last modified: Subhanik Purkayastha (Sep 19, 2019, reformatted for CCV)
 % Last modified: Katie Storey (Aug, 1, 2018, added order paramter code)
 % Last modified: John T. Nardini (Jul, 3, 2018, 3D simulation code)
@@ -8,6 +9,9 @@ function [] = sim_3D_model(iCr, iLr)
 % set RNG seed based on param value
 seed = 17 + 23*(iCr) + iLr;
 rng(seed)
+
+% time-step for iterative solver
+deltat = 0.01
 
 % create directories to store results
 mkdir(['data_3d_icR_' num2str(iCr) '_iLr_' num2str(iLr)])
@@ -53,7 +57,7 @@ for i = 1:100
 
     % simulate
     tic
-    [t,z] = ode45(@(t,z) sim_swarm_ode_3d_rhs(t,z,alpha,beta,cA,cR,lA,lR),tspan,z0, Opt);
+    [t, z] = sim_swarm_ode_3d_rhs_iterative(tspan, deltat, z, alpha, beta, cA, cR, lA, lR, sigma);
     toc
     
     % save results
