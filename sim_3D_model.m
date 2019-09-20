@@ -1,34 +1,26 @@
 function [] = sim_3D_model(iCr, iLr)
 
 % Simulate 3-D D'Orsogna model with params iCr, iLr
-% Author: Subhanik Purkayastha (Sept 19)
+% Last modified: Subhanik Purkayastha (Sep 19, 2019, reformatted for CCV)
+% Last modified: Katie Storey (Aug, 1, 2018, added order paramter code)
+% Last modified: John T. Nardini (Jul, 3, 2018, 3D simulation code)
 
-seed = 17+23*(iCr+iLr);
+% set RNG seed based on param value
+seed = 17 + 23*(iCr) + iLr;
 rng(seed)
 
+% create directories to store results
 mkdir(['data_3d_icR_' num2str(iCr) '_iLr_' num2str(iLr)])
 mkdir(['order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
 
-for i = 1:2
+% simulate 100 realizations
+for i = 1:100
 
     % number of particles
     N = 200;
 
-    % plotting options
-    iShow=NaN; % plot every iShow seconds. Set to NaN for no plotting while simulating
-
-    if isnan(iShow)==0
-        global printIndex % this variable is necessary to control plotting during simulations
-        printIndex=0;
-
-        % setting of odesolver. We reduce absolute tolerance to keep simulation
-        % time low over all parameter values
-        Opt = odeset('AbsTol', 1e-2,'OutputFcn',@(t,z,flag) sim_swarm_plot_3d(t,z,flag,iShow, N));
-    else
-    
-        % setting for odesolver
-        Opt = odeset('AbsTol', 1e-2);
-    end
+    % setting for odesolver
+    Opt = odeset('AbsTol', 1e-2);
 
     % parameter values except cR and lR (compare D'Orsognal Model)
     % note that since we're setting cA=lA=1, cR and lR can be interpreted as the
@@ -59,11 +51,12 @@ for i = 1:2
     % put it all in one big vector of ICs
     z0 = [x; y; z; vx; vy; vz];
 
+    % simulate
     tic
     [t,z] = ode45(@(t,z) sim_swarm_ode_3d_rhs(t,z,alpha,beta,cA,cR,lA,lR),tspan,z0, Opt);
     toc
     
-    % save
+    % save results
     save(strcat('./data_3d_icR_', num2str(iCr), '_ilR_', num2str(iLr),'/data_3d_icR_', num2str(iCr), '_ilR_',num2str(iLr),...
     '_iR_',num2str(i),'.mat'));
             
@@ -95,7 +88,7 @@ for i = 1:2
     cy = sum(y,2)./N;
     cz = sum(z,2)./N;
             
-    %creates col vector of center of mass (velocity) for each t
+    % creates col vector of center of mass (velocity) for each t
     c_vx = sum(vx,2)./N;
     c_vy = sum(vy,2)./N;
     c_vz = sum(vz,2)./N;
@@ -132,9 +125,9 @@ for i = 1:2
     % average nearest neighbor distance
     nnd = zeros(max_t,1);
             
-    % 3D order parameter I_s = I_flock - I_mill
+    % 3-D order parameter I_s = I_flock - I_mill
             
-    % Calculating I_mill and nnd at each t
+    % calculating I_mill and nnd at each t
     I_mill = zeros(max_t,1);
 
     for v = 1:max_t
@@ -183,15 +176,15 @@ for i = 1:2
         
 	% calculate the degree of alignment between all omega
         for j = 1:N
-            align_j = sum((sum(omega(j,:).*omega,2)))-sum(omega(j,:).*omega(j,:),2);
+            align_j = sum((sum(omega(j,:).*omega,2))) - sum(omega(j,:).*omega(j,:),2);
             I_mill(v) = I_mill(v) + align_j;
         end
                 
         I_mill(v) = I_mill(v)/(N*(N-1));
+	
      end
             
-           
-     % Calculating I_flock
+     % calculating I_flock
      % v_diff = difference between velocity and vel. center of mass
      vx_diff = zeros(max_t,N);
      vy_diff = zeros(max_t,N);
@@ -207,28 +200,29 @@ for i = 1:2
             
      I_s = I_flock - I_mill;
            
-     % Matrix with all 5 order params for each t
+     % matrix with all 5 order params for each t
      order_par_mat = [P Mang Mabs nnd I_s];
 
-     % Create table of order parameter values for each time unit
+     % create table of order parameter values for each time unit
      prelim_table = [t(1:20:end) P(1:20:end) Mang(1:20:end) Mabs(1:20:end) nnd(1:20:end) I_s(1:20:end)];
-     % Set Nan values to zero
+     
+     % set Nan values to zero
      prelim_table(isnan(prelim_table)) = 0;
             
-     % Fill in with repeated values at final time (if simulation stopped early)
+     % fill in with repeated values at final time (if simulation stopped early)
      prelim_table_height = size(prelim_table,1);
      if prelim_table_height < 2001
         prelim_table = [prelim_table ; zeros(101-prelim_table_height,6)];
         prelim_table(prelim_table_height+1:end,2:6) = repmat([P(end) Mang(end) Mabs(end) nnd(end) I_s(end)],101-prelim_table_height,1);
-        prelim_table(:,1)=0:1000;
+        prelim_table(:,1) = 0:1000;
      end
             
      final_table = prelim_table;
             
-     %save data as a csv file
+     % save data as a csv file
      write_file = ['./order_3d_data_icR_' num2str(iCr) '_ilR_' num2str(iLr) '/order_3d_data_icR_' num2str(iCr) '_ilR_' num2str(iLr) '_iR_' num2str(i) '_order_params.csv'];          
-     csvwrite(write_file,final_table,0,0)
-
+     csvwrite(write_file,final_table, 0, 0)
+     
 end
 
 end
