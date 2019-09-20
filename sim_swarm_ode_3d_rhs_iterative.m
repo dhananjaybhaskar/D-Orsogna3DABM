@@ -84,7 +84,7 @@ for i = 0:dt:tfinal
     
     % put into output vector
     if (i == c)
-        output = [output; [x' , y' , z' ,  vx' , vy' , vz']];
+        output = [output; [c, x' , y' , z' ,  vx' , vy' , vz']];
         if (i ~= tfinal)
             c = tspan(i + 2);
         end
