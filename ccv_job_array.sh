@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J 
+#SBATCH -J MATLAB
 #SBATCH -t 12:00:00
 #SBATCH --array=1-25
 
