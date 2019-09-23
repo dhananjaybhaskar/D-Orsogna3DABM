@@ -24,6 +24,7 @@ Z = Z(:);
 
 % find N, the number of particles
 N = length(Z)/6;
+N = int16(N);
 
 % find x, y, z and velocity terms
 x = Z(1:N) + (0 + (sigma)*randn(N,1));
