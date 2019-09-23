@@ -12,7 +12,7 @@ rng(seed)
 
 % set index values
 iCr = ceil(idx/5)
-iLr = rem(idx/5)
+iLr = rem(idx,5)
 
 % time-step for iterative solver
 deltat = 0.01
