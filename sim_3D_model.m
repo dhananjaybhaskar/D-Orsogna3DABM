@@ -55,8 +55,8 @@ for i = 1:100
     % select cR, lR
     cRvals=[0.1 0.5 0.9 2 3]; %create the cR range .. replusion strength
     lRvals=[0.1 0.5 0.9 2 3]; %create the lR range .. repulsion range
-    cR = cRvals[iCr];
-    lR = lRvals[iLr];
+    cR = cRvals(iCr);
+    lR = lRvals(iLr);
             
     % put it all in one big vector of ICs
     z0 = [x; y; z; vx; vy; vz];
