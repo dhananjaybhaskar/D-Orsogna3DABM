@@ -56,7 +56,7 @@ c = tspan(1);
 t = [];
 output = [];
 
-for i = 0:dt:tfinal
+for i = 1:length(tspan)
 
     % provide ODE of the locations
     dxdt = vx;
@@ -85,10 +85,10 @@ for i = 0:dt:tfinal
     dvzdt = (alpha - beta*v_normSq).*vz - sum(u_prime.*Zdiff./(D+eps),2);
     
     % put into output vector
-    if (i == c)
+    if (tspan(i) == c)
         t = [t; c];
         output = [output; [x' , y' , z' ,  vx' , vy' , vz']];
-        if (i ~= tfinal)
+        if (tspan(i) ~= tfinal)
             c = tspan(i + 2);
         end
     end
