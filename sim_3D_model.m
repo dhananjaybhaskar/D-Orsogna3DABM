@@ -6,13 +6,13 @@ function [] = sim_3D_model(idx, sigma)
 % Last modified: Katie Storey (Aug, 1, 2018, added order paramter code)
 % Last modified: John T. Nardini (Jul, 3, 2018, 3D simulation code)
 
-% set RNG seed based on param value
-seed = 17 + 23*(iCr) + iLr;
-rng(seed)
-
 % set index values
 iCr = ceil(idx/5)
 iLr = rem(idx,5)
+
+% set RNG seed based on param value
+seed = 17 + 23*(iCr) + iLr;
+rng(seed)
 
 % time-step for iterative solver
 deltat = 0.01
