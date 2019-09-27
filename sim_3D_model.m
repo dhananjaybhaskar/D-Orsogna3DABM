@@ -206,7 +206,7 @@ for i = 1:100
      order_par_mat = [P Mang Mabs nnd I_s];
 
      % create table of order parameter values for each time unit
-     prelim_table = [t(1:10:end) P(1:10:end) Mang(1:10:end) Mabs(1:10:end) nnd(1:10:end) I_s(1:20:end)];
+     prelim_table = [t(1:10:end) P(1:10:end) Mang(1:10:end) Mabs(1:10:end) nnd(1:10:end) I_s(1:10:end)];
      
      % set Nan values to zero
      prelim_table(isnan(prelim_table)) = 0;
