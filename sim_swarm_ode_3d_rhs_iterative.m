@@ -49,6 +49,7 @@ t = [];
 output = [];
 count = 0;
 for i = 0:dt:tfinal
+    [i]
     % provide ODE of the locations
     dxdt = vx;
     dydt = vy;
@@ -72,7 +73,7 @@ for i = 0:dt:tfinal
     % put into output vector
     if (i == c)
         t = [t; c];
-        output = [output; [dxdt' , dydt' , dzdt' ,  dvxdt' , dvydt' , dvzdt']];
+        output = [output; [x' , y' , z' ,  dxdt' , dydt' , dzdt']];
         if (i ~= tfinal)
             c = tspan(count + 2);
             count = count + 1;
