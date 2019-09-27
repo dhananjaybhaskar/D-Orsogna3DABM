@@ -7,18 +7,18 @@ function [] = sim_3D_model(idx, sigma)
 % Last modified: John T. Nardini (Jul, 3, 2018, 3D simulation code)
 
 % set index values
-iCr = ceil(idx/5)
-iLr = rem(idx,5)
+iCr = ceil(idx/5);
+iLr = rem(idx,5)+1;
 
 % set RNG seed based on param value
 seed = 17 + 23*(iCr) + iLr;
 rng(seed)
 
 % time-step for iterative solver
-deltat = 0.001
+deltat = 0.01;
 
 % create directories to store results
-mkdir(['data_3d_icR_' num2str(iCr) '_iLr_' num2str(iLr)])
+mkdir(['data_3d_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
 mkdir(['order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
 
 % simulate 100 realizations
@@ -57,28 +57,23 @@ for i = 1:100
     lRvals=[0.1 0.5 0.9 2 3]; %create the lR range .. repulsion range
     cR = cRvals(iCr);
     lR = lRvals(iLr);
-            
+     
     % put it all in one big vector of ICs
     z0 = [x; y; z; vx; vy; vz];
 
     % simulate
-    tic
-    [t, z] = sim_swarm_ode_3d_rhs_iterative(tspan, deltat, z0, alpha, beta, cA, cR, lA, lR, sigma);
-    toc
+    [t, q] = sim_swarm_ode_3d_rhs_iterative(tspan, deltat, z0, alpha, beta, cA, cR, lA, lR, sigma);
     
     % save results
-    save(strcat('./data_3d_icR_', num2str(iCr), '_ilR_', num2str(iLr),'/data_3d_icR_', num2str(iCr), '_ilR_',num2str(iLr),...
+    save(strcat('./data_3d_iCr_', num2str(iCr), '_iLr_', num2str(iLr),'/data_3d_iCr_', num2str(iCr), '_ilR_',num2str(iLr),...
     '_iR_',num2str(i),'.mat'));
              
     % number of time steps
     max_t=length(t);
 
     % rename pos,vel matrix to capital Z (so we can use z for third component)
-    Z = z;
-
-    % number of particles
-    N = size(Z,2)/6;
-
+    Z = q;
+ 
     % find x,y,z position and velocity vectors
     x = Z(:,1:N);
     y = Z(:,N+1:2*N);
@@ -211,7 +206,7 @@ for i = 1:100
      order_par_mat = [P Mang Mabs nnd I_s];
 
      % create table of order parameter values for each time unit
-     prelim_table = [t(1:20:end) P(1:20:end) Mang(1:20:end) Mabs(1:20:end) nnd(1:20:end) I_s(1:20:end)];
+     prelim_table = [t(1:10:end) P(1:10:end) Mang(1:10:end) Mabs(1:10:end) nnd(1:10:end) I_s(1:20:end)];
      
      % set Nan values to zero
      prelim_table(isnan(prelim_table)) = 0;
@@ -227,7 +222,7 @@ for i = 1:100
      final_table = prelim_table;
             
      % save data as a csv file
-     write_file = ['./order_3d_data_icR_' num2str(iCr) '_ilR_' num2str(iLr) '/order_3d_data_icR_' num2str(iCr) '_ilR_' num2str(iLr) '_iR_' num2str(i) '_order_params.csv'];          
+     write_file = ['./order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '/order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '_iR_' num2str(i) '_order_params.csv'];          
      csvwrite(write_file,final_table, 0, 0)
      
 end
