@@ -15,7 +15,7 @@ seed = 17 + 23*(iCr) + iLr;
 rng(seed)
 
 % time-step for iterative solver
-deltat = 0.01
+deltat = 0.001
 
 % create directories to store results
 mkdir(['data_3d_icR_' num2str(iCr) '_iLr_' num2str(iLr)])
@@ -40,7 +40,7 @@ for i = 1:100
 
     % time range
     tfinal = 2000; 		% final time in seconds
-    tspan = 0:0.05:tfinal; 	% which time points are to be saved
+    tspan = 0:1:tfinal; 	% which time points are to be saved
     
     % initial positions - uniform on [-1,1]
     x = -2*rand(N,1) + 1;
@@ -63,15 +63,12 @@ for i = 1:100
 
     % simulate
     tic
-    [t, z] = sim_swarm_ode_3d_rhs_iterative(tspan, deltat, z, alpha, beta, cA, cR, lA, lR, sigma);
+    [t, z] = sim_swarm_ode_3d_rhs_iterative(tspan, deltat, z0, alpha, beta, cA, cR, lA, lR, sigma);
     toc
     
     % save results
     save(strcat('./data_3d_icR_', num2str(iCr), '_ilR_', num2str(iLr),'/data_3d_icR_', num2str(iCr), '_ilR_',num2str(iLr),...
     '_iR_',num2str(i),'.mat'));
-            
-    load(['./data_3d_icR_', num2str(iCr), '_ilR_', num2str(iLr),'/data_3d_icR_', num2str(iCr), '_ilR_',num2str(iLr),...
-                '_iR_',num2str(i), '.mat'])
              
     % number of time steps
     max_t=length(t);
@@ -222,9 +219,9 @@ for i = 1:100
      % fill in with repeated values at final time (if simulation stopped early)
      prelim_table_height = size(prelim_table,1);
      if prelim_table_height < 2001
-        prelim_table = [prelim_table ; zeros(101-prelim_table_height,6)];
-        prelim_table(prelim_table_height+1:end,2:6) = repmat([P(end) Mang(end) Mabs(end) nnd(end) I_s(end)],101-prelim_table_height,1);
-        prelim_table(:,1) = 0:1000;
+        prelim_table = [prelim_table ; zeros(2001-prelim_table_height,6)];
+        prelim_table(prelim_table_height+1:end,2:6) = repmat([P(end) Mang(end) Mabs(end) nnd(end) I_s(end)],2001-prelim_table_height,1);
+        prelim_table(:,1) = 0:2000;
      end
             
      final_table = prelim_table;
