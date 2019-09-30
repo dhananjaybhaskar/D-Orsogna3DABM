@@ -18,8 +18,8 @@ rng(seed)
 deltat = 0.01;
 
 % create directories to store results
-mkdir(['data_3d_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
-mkdir(['order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
+mkdir(['Ndata_3d_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
+mkdir(['Norder_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
 
 % simulate 100 realizations
 for i = 1:100
@@ -65,7 +65,7 @@ for i = 1:100
     [t, q] = sim_swarm_ode_3d_rhs_iterative(tspan, deltat, z0, alpha, beta, cA, cR, lA, lR, sigma);
     
     % save results
-    save(strcat('./data_3d_iCr_', num2str(iCr), '_iLr_', num2str(iLr),'/data_3d_iCr_', num2str(iCr), '_ilR_',num2str(iLr),...
+    save(strcat('./Ndata_3d_iCr_', num2str(iCr), '_iLr_', num2str(iLr),'/data_3d_iCr_', num2str(iCr), '_ilR_',num2str(iLr),...
     '_iR_',num2str(i),'.mat'));
              
     % number of time steps
@@ -222,7 +222,7 @@ for i = 1:100
      final_table = prelim_table;
             
      % save data as a csv file
-     write_file = ['./order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '/order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '_iR_' num2str(i) '_order_params.csv'];          
+     write_file = ['./Norder_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '/order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '_iR_' num2str(i) '_order_params.csv'];          
      csvwrite(write_file,final_table, 0, 0)
      
 end
