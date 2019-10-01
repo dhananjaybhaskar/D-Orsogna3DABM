@@ -23,12 +23,12 @@ Z = Z(:);
 % find N, the number of particles
 N = length(Z)/6;
 % find x, y, z and velocity terms
-x = Z(1:N) + (0 + (sigma)*randn(N,1));
-y = Z(N+1:2*N) + (0 + (sigma)*randn(N,1));
-z = Z(2*N+1:3*N) + (0 + (sigma)*randn(N,1));
-vx = Z(3*N+1:4*N);
-vy = Z(4*N+1:5*N);
-vz = Z(5*N+1:6*N);
+x = Z(1:N)
+y = Z(N+1:2*N);
+z = Z(2*N+1:3*N);
+vx = Z(3*N+1:4*N) + (0 + (sigma)*randn(N,1));
+vy = Z(4*N+1:5*N) + (0 + (sigma)*randn(N,1));
+vz = Z(5*N+1:6*N) + (0 + (sigma)*randn(N,1));
 % normal distributions
 %pdx = fitdist(x, 'Normal');
 %sigmax = pdx.sigma * sigma;
@@ -80,12 +80,12 @@ for i = 0:dt:tfinal
         end
     end
     % calculate new positions
-    x = (x + dxdt.*dt) + ((sigma)*randn(N,1));
-    y = (y + dydt.*dt) + ((sigma)*randn(N,1));
-    z = (z + dzdt.*dt) + ((sigma)*randn(N,1));
+    x = (x + dxdt.*dt);
+    y = (y + dydt.*dt);
+    z = (z + dzdt.*dt);
     % calculate new velocities
-    vx = vx + dvxdt.*dt;
-    vy = vy + dvydt.*dt;
-    vz = vz + dvzdt.*dt;
+    vx = vx + dvxdt.*dt + (0 + (sigma)*randn(N,1));
+    vy = vy + dvydt.*dt + (0 + (sigma)*randn(N,1));
+    vz = vz + dvzdt.*dt + (0 + (sigma)*randn(N,1));
 end
 end
