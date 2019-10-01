@@ -22,7 +22,7 @@ mkdir(['data_3d_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
 mkdir(['order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
 
 % simulate 100 realizations
-for i = 1:1
+for i = 1:2
 
     % number of particles
     N = 200;
