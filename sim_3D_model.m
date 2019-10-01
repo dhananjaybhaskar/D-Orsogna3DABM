@@ -65,7 +65,7 @@ for i = 1:1
     [t, q] = sim_swarm_ode_3d_rhs_iterative(tspan, deltat, z0, alpha, beta, cA, cR, lA, lR, sigma);
     
     % save results
-    save(strcat('./2Ndata_3d_iCr_', num2str(iCr), '_iLr_', num2str(iLr),'/data_3d_iCr_', num2str(iCr), '_ilR_',num2str(iLr),...
+    save(strcat('./data_3d_iCr_', num2str(iCr), '_iLr_', num2str(iLr),'/data_3d_iCr_', num2str(iCr), '_ilR_',num2str(iLr),...
     '_iR_',num2str(i),'.mat'));
              
     % number of time steps
