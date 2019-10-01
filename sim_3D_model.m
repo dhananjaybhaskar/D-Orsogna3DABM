@@ -18,8 +18,8 @@ rng(seed)
 deltat = 0.01;
 
 % create directories to store results
-mkdir(['2Ndata_3d_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
-mkdir(['2Norder_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
+mkdir(['data_3d_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
+mkdir(['order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
 
 % simulate 100 realizations
 for i = 1:1
@@ -40,7 +40,7 @@ for i = 1:1
 
     % time range
     tfinal = 2000; 		% final time in seconds
-    tspan = 0:1:tfinal; 	% which time points are to be saved
+    tspan = 0:0.05:tfinal; 	% which time points are to be saved
     
     % initial positions - uniform on [-1,1]
     x = -2*rand(N,1) + 1;
@@ -222,7 +222,7 @@ for i = 1:1
      final_table = prelim_table;
             
      % save data as a csv file
-     write_file = ['./2Norder_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '/order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '_iR_' num2str(i) '_order_params.csv'];          
+     write_file = ['./order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '/order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '_iR_' num2str(i) '_order_params.csv'];          
      csvwrite(write_file,final_table, 0, 0)
      
 end
