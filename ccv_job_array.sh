@@ -8,4 +8,4 @@
 #SBATCH -o arrayjob-%a.out
 
 echo "Starting job $SLURM_ARRAY_TASK_ID on $HOSTNAME"
-matlab -nodisplay -r "sim_3D_model($SLURM_ARRAY_TASK_ID,3); exit"
+matlab -nodisplay -r "sim_3D_model($SLURM_ARRAY_TASK_ID,0); exit"
