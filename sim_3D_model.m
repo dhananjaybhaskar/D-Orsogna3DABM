@@ -22,7 +22,7 @@ mkdir(['data_3d_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
 mkdir(['order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr)])
 
 % simulate 100 realizations
-for i = 1:2
+for i = 1:1
 
     % number of particles
     N = 200;
@@ -219,6 +219,15 @@ for i = 1:2
         prelim_table(:,1) = 0:2000;
      end
             
+     final_table = prelim_table;
+            
+     % save data as a csv file
+     write_file = ['./order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '/order_3d_data_iCr_' num2str(iCr) '_iLr_' num2str(iLr) '_iR_' num2str(i) '_order_params.csv'];          
+     csvwrite(write_file,final_table, 0, 0)
+     
+end
+
+end
      final_table = prelim_table;
             
      % save data as a csv file
