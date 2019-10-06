@@ -71,7 +71,7 @@ for i = 0:dt:tfinal
     dvydt = (alpha - beta*v_normSq).*vy - sum(u_prime.*Ydiff./(D+eps),2);
     dvzdt = (alpha - beta*v_normSq).*vz - sum(u_prime.*Zdiff./(D+eps),2);
     % put into output vector
-    if (i == c)
+    if (abs(i-c) < 0.00001)
         t = [t; c];
         output = [output; [x' , y' , z' ,  dxdt' , dydt' , dzdt']];
         if (i ~= tfinal)
